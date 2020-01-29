@@ -8,7 +8,8 @@ import tableauserverclient as TSC
 server = TSC.Server('https://10ax.online.tableau.com')
 server.use_server_version()
 tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'sridevis007', 'vizsivadev749967')
-#test environment
+
+#test environment link
 server = TSC.Server('http://10.159.131.6:8000/')
 server.use_server_version()
 tableau_auth = TSC.TableauAuth('admin', 'Deloitte@1234', 'vnpt_b6')
