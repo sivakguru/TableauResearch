@@ -15,9 +15,9 @@ server.use_server_version()
 tableau_auth = TSC.TableauAuth('admin', 'Deloitte@1234', 'vnpt_b6')
 
 #create a new project
-# with server.auth.sign_in(tableau_auth):
-#     new_proj = TSC.ProjectItem("second_project", "from python script")
-#     new_proj = server.projects.create(new_proj)
+with server.auth.sign_in(tableau_auth):
+    new_proj = TSC.ProjectItem("second_project", "from python script")
+    new_proj = server.projects.create(new_proj)
 
 #publish the workbook
 with server.auth.sign_in(tableau_auth):
