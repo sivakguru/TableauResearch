@@ -9,10 +9,10 @@ server = TSC.Server('https://10ax.online.tableau.com')
 server.use_server_version()
 tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'sridevis007', 'vizsivadev749967')
 
-#test environment link
-server = TSC.Server('http://10.159.131.6:8000/')
-server.use_server_version()
-tableau_auth = TSC.TableauAuth('admin', 'Deloitte@1234', 'vnpt_b6')
+# #test environment link
+# server = TSC.Server('http://10.159.131.6:8000/')
+# server.use_server_version()
+# tableau_auth = TSC.TableauAuth('admin', 'Deloitte@1234', 'vnpt_b6')
 
 #create a new project
 with server.auth.sign_in(tableau_auth):
@@ -46,6 +46,3 @@ s_info = server.server_info.get()
 print(s_info.product_version)
 print(s_info.rest_api_version)
 print(s_info._build_number)
-
-
-

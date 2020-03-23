@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Tableau Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script type='text/javascript' src='https://10ax.online.tableau.com/javascripts/api/viz_v1.js'></script>
+
+<body>
+
+    <!-- Header -->
+    <header class="w3-display-container w3-content w3-center" style="max-width:1500px">
+        <img class="w3-image" src="C:/Users/sivkumar/Pictures/Siva/Japan/20170701_130633.jpg" alt="Me" width="1000" height="500">
+        <div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey w3-center">
+            <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">Siva Tableau</h1>
+            <h5 class="w3-hide-large" style="white-space:nowrap">Siva Tableau</h5>
+            <h3 class="w3-hide-medium w3-hide-small">Viz Engineer</h3>
+        </div>
+
+        <!-- Navbar (placed at the bottom of the header image) -->
+        <div class="w3-bar w3-light-grey w3-round w3-display-bottommiddle w3-hide-small" style="bottom:-16px">
+            <a href="#" class="w3-bar-item w3-button">Home</a>
+            <a href="#portfolio" class="w3-bar-item w3-button">Portfolio</a>
+            <a href="#tableau_dashboard" class="w3-bar-item w3-button">Tableau Dashboard</a>
+        </div>
+    </header>
+
+    <!-- Page content -->
+    <div class="w3-content w3-padding-large w3-margin-top" id="portfolio">
+
+        <!-- Images (Portfolio) -->
+        <img src="/w3images/ocean.jpg" alt="Ocean" class="w3-image" width="1000" height="500">
+        <img src="/w3images/ocean2.jpg" alt="Ocean II" class="w3-image w3-margin-top" width="1000" height="500">
+        <img src="/w3images/falls2.jpg" alt="Falls" class="w3-image w3-margin-top" width="1000" height="500">
+        <img src="/w3images/mountainskies.jpg" alt="Skies" class="w3-image w3-margin-top" width="1000" height="500">
+        <img src="/w3images/mountains2.jpg" alt="Mountains" class="w3-image w3-margin-top" width="1000" height="500">
+    </div>
+    <div class="w3-card w3-hover-shadow w3-teal" id="tableau_dashboard">
+        <h1>Superstore</h1>
+        <div class="w3-bar w3-teal">
+            <button class="w3-button w3-round-xxlarge w3-yellow w3-hover-opacity w3-hover-red" style="width:10%" onclick="opendash('Overview')">Overview</button>
+            <button class="w3-button w3-round-xxlarge w3-yellow w3-hover-opacity w3-hover-red" style="width:10%" onclick="opendash('Product')">Product</button>
+            <button class="w3-button w3-round-xxlarge w3-yellow w3-hover-opacity w3-hover-red" style="width:10%" onclick="opendash('Customers')">Customers</button>
+            <button class="w3-button w3-round-xxlarge w3-yellow w3-hover-opacity w3-hover-red" style="width:10%" onclick="opendash('Shipping')">Shipping</button>
+        </div>
+        <div id="Overview" class="w3-panel w3-light-grey w3-center view">
+        <!--Tableau Webpage (Tableau Dashboard) -->
+            <div class='tableauPlaceholder' style='width: 1920px; height: 893px;'><object class='tableauViz' width='1920'
+                height='893' style='display:none;'>
+                <param name='host_url' value='https%3A%2F%2F10ax.online.tableau.com%2F' />
+                <param name='embed_code_version' value='3' />
+                <param name='site_root' value='&#47;t&#47;vizsivadev749967' />
+                <param name='name' value='Superstore&#47;Overview' />
+                <param name='tabs' value='yes' />
+                <param name='toolbar' value='yes' />
+                <param name='showAppBanner' value='false' /></object>
+            </div>
+        </div>
+        <div id="Product" class="w3-panel w3-light-grey w3-center view" style="display:none">
+            <!--Tableau Webpage (Tableau Dashboard) -->
+                <div class='tableauPlaceholder' style='width: 1920px; height: 893px;'><object class='tableauViz' width='1920'
+                    height='893' style='display:none;'>
+                    <param name='host_url' value='https%3A%2F%2F10ax.online.tableau.com%2F' />
+                    <param name='embed_code_version' value='3' />
+                    <param name='site_root' value='&#47;t&#47;vizsivadev749967' />
+                    <param name='name' value='Superstore&#47;Product' />
+                    <param name='tabs' value='yes' />
+                    <param name='toolbar' value='yes' />
+                    <param name='showAppBanner' value='false' /></object>
+                </div>
+            </div>
+    </div>
+    <div id="Customers" class="w3-panel w3-light-grey w3-center view" style="display:none">
+        <!--Tableau Webpage (Tableau Dashboard) -->
+            <div class='tableauPlaceholder' style='width: 1920px; height: 893px;'><object class='tableauViz' width='1920'
+                height='893' style='display:none;'>
+                <param name='host_url' value='https%3A%2F%2F10ax.online.tableau.com%2F' />
+                <param name='embed_code_version' value='3' />
+                <param name='site_root' value='&#47;t&#47;vizsivadev749967' />
+                <param name='name' value='Superstore&#47;Customers' />
+                <param name='tabs' value='yes' />
+                <param name='toolbar' value='yes' />
+                <param name='showAppBanner' value='false' /></object>
+            </div>
+        </div>
+    </div>
+    <div id="Shipping" class="w3-panel w3-light-grey w3-center view" style="display:none">
+        <!--Tableau Webpage (Tableau Dashboard) -->
+            <div class='tableauPlaceholder' style='width: 1920px; height: 893px;'><object class='tableauViz' width='1920'
+                height='893' style='display:none;'>
+                <param name='host_url' value='https%3A%2F%2F10ax.online.tableau.com%2F' />
+                <param name='embed_code_version' value='3' />
+                <param name='site_root' value='&#47;t&#47;vizsivadev749967' />
+                <param name='name' value='Superstore&#47;Shipping' />
+                <param name='tabs' value='yes' />
+                <param name='toolbar' value='yes' />
+                <param name='showAppBanner' value='false' /></object>
+            </div>
+        </div>
+    </div>
+    <script>
+        function opendash(view_name) {
+          var i;
+          var x = document.getElementsByClassName("view");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          document.getElementById(view_name).style.display = "block";  
+        }
+    
+    </script>
+
+</body>
+
+</html>
