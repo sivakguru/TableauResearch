@@ -55,6 +55,26 @@ wb_proj_df = pd.DataFrame.from_dict({'project_id': proj_id,
                                     'workbook_id' : wb_id,
                                     'workbook_name' : wb_name})
 
+#find the user name using Owner ID
+if all_workbooks[0].owner_id == all_users[0].id:
+    print(all_users[0].name)
+
+#find the user name for all the workbooks using the owner ID
+for wb in range(len(all_workbooks)):
+    for usr in range(len(all_users)):
+        if all_workbooks[wb].owner_id == all_users[usr].id:
+            print(all_workbooks[wb].name, all_users[usr].name)
+
+#get workbook items by ID
+test_wb = server.workbooks.get_by_id(all_workbooks[0].id)
+#get all workbook items with pagination details
+test_wb = server.workbooks.get()
+
+
+###################
+server.workbooks.populate_views(workbook_info[0])
+print([view.name for view in test_wb.views],
+[view.project_id for view in test_wb.views])
 
 #get tableau workbook details with views
 proj_id = []
@@ -119,3 +139,27 @@ with server.auth.sign_in(tableau_auth):
         image_file.write(view_item.image)
 
     print("View image saved to {0}".format('C:/Users/sivkumar/Documents/Project MOM/RR/Tableau/view_preview_image.png'))
+
+
+"""<script type='text/javascript' src='https://10ax.online.tableau.com/javascripts/api/viz_v1.js'></script>
+<div class='tableauPlaceholder' style='width: 1600px; height: 877px;'><object class='tableauViz' width='1600'
+        height='877' style='display:none;'>
+        <param name='host_url' value='https%3A%2F%2F10ax.online.tableau.com%2F' />
+        <param name='embed_code_version' value='3' />
+        <param name='site_root' value='&#47;t&#47;vizsivadev749967' />
+        <param name='name' value='{}&#47;{}' />
+        <param name='tabs' value='no' />
+        <param name='toolbar' value='yes' />
+        <param name='showAppBanner' value='false' /></object>
+</div>""".format(workbook_info [0].name, all_views [0].name)
+
+
+#populating the Images for Workbook and views
+#image of a view
+server.views.populate_image(all_views[0])
+pic = Image.open(io.BytesIO(all_views[0].image))
+pic.show()
+
+#thumbnail of a workbook
+server.workbooks.populate_preview_image(workbook_info[0])
+wb_pic = Image.open(io.BytesIO(workbook_info[0].preview_image))

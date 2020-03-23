@@ -26,30 +26,10 @@ all_workbooks = list(TSC.Pager(server.workbooks, request_options))
 all_views = list(TSC.Pager(server.views, request_options))
 all_users = list(TSC.Pager(server.users, request_options))
 
-#find the user name using Owner ID
-if all_workbooks[0].owner_id == all_users[0].id:
-    print(all_users[0].name)
-
-#find the user name for all the workbooks using the owner ID
-for wb in range(len(all_workbooks)):
-    for usr in range(len(all_users)):
-        if all_workbooks[wb].owner_id == all_users[usr].id:
-            print(all_workbooks[wb].name, all_users[usr].name)
-
-#get workbook items by ID
-test_wb = server.workbooks.get_by_id(all_workbooks[0].id)
-#get all workbook items with pagination details
-test_wb = server.workbooks.get()
-
 #load all workbook items by using workbook ID
 workbook_info = []
 for wb in range(len(all_workbooks)):
     workbook_info.append(server.workbooks.get_by_id(all_workbooks[wb].id))
-
-###################
-server.workbooks.populate_views(workbook_info[0])
-print([view.name for view in test_wb.views],
-[view.project_id for view in test_wb.views])
 
 #loop through Workbook Items and populate the data for Views under each workbook
 #each loop appends the data to the array
@@ -63,6 +43,7 @@ proj_name = []
 owner_id = []
 owner_name = []
 vw_image = []
+embed_code = []
 
 for wb in range(len(workbook_info)): 
     server.workbooks.populate_views(workbook_info[wb])
@@ -77,8 +58,19 @@ for wb in range(len(workbook_info)):
                 owner_name.append(all_users[usr].name)
         vw_id.append(view.id)
         vw_name.append(view.name)
-        server.views.populate_image(view)
-        vw_image.append(Image.open(io.BytesIO(view.image)))
+        server.views.populate_preview_image(view)
+        vw_image.append(Image.open(io.BytesIO(view.preview_image)))
+        embed_code.append("""<script type='text/javascript' src='https://10ax.online.tableau.com/javascripts/api/viz_v1.js'></script>
+                            <div class='tableauPlaceholder' style='width: 1600px; height: 877px;'><object class='tableauViz' width='1600'
+                                    height='877' style='display:none;'>
+                                    <param name='host_url' value='https%3A%2F%2F10ax.online.tableau.com%2F' />
+                                    <param name='embed_code_version' value='3' />
+                                    <param name='site_root' value='&#47;t&#47;vizsivadev749967' />
+                                    <param name='name' value='{}&#47;{}' />
+                                    <param name='tabs' value='no' />
+                                    <param name='toolbar' value='yes' />
+                                    <param name='showAppBanner' value='false' /></object>
+                            </div>""".format(workbook_info[wb].name.replace(' ', ''), view.name.replace(' ', '')))
 
 #once the Views image are populated using---server.views.populate_image(view)---
 #all the images are in the Bytes data type
@@ -88,27 +80,20 @@ for wb in range(len(workbook_info)):
 #make dictionary from all the arrays
 #load dictionary to data frame using Pandas
 df = pd.DataFrame.from_dict({'proj_id' : proj_id,
-'proj_name' : proj_name,
-'wb_id': wb_id,
-'wb_name' : wb_name,
-'vw_id' : vw_id,
-'vw_name' : vw_name,
-'owner_id' : owner_id,
-'owner_name' : owner_name,
-'vw_image' : vw_image})
+                            'proj_name' : proj_name,
+                            'wb_id': wb_id,
+                            'wb_name' : wb_name,
+                            'vw_id' : vw_id,
+                            'vw_name' : vw_name,
+                            'owner_id' : owner_id,
+                            'owner_name' : owner_name,
+                            'vw_image' : vw_image,
+                            'embed_code' : embed_code})
 
 #view image from a data frame
-df.iloc[0]['vw_image']
+# df.iloc[0]['vw_image']
 
+# df.iloc[15]['embed_code'].replace('\n', '')
 
-#populating the Images for Workbook and views
-#image of a view
-server.views.populate_image(all_views[0])
-pic = Image.open(io.BytesIO(all_views[0].image))
-pic.show()
-
-#thumbnail of a workbook
-server.workbooks.populate_preview_image(workbook_info[0])
-wb_pic = Image.open(io.BytesIO(workbook_info[0].preview_image))
 
 
