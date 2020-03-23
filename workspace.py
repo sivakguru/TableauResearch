@@ -4,16 +4,20 @@
     #pip install tableauserverclient
 
 import tableauserverclient as TSC
+#pandas for Data frame capabilities
 import pandas as pd
+#PIL for handeling Image files
 from PIL import Image
+#array
 from array import array
+#io to read bytes image data types
 import io
 
 #set up authentication RR Deveoper account
 server = TSC.Server('https://10ax.online.tableau.com')
 server.use_server_version()
-tableau_auth = TSC.TableauAuth('thulasiramvanniya@gmail.com', 'Sairam@2903', 'thulasiramdev938591')
-tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'sridevis007', 'vizsivadev749967')
+#tableau_auth = TSC.TableauAuth('thulasiramvanniya@gmail.com', 'Sairam@2903', 'thulasiramdev938591')
+tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'Developer_123', 'vizsivadev749967')
 #sign-in to server
 server.auth.sign_in(tableau_auth)
 
@@ -47,7 +51,9 @@ server.workbooks.populate_views(workbook_info[0])
 print([view.name for view in test_wb.views],
 [view.project_id for view in test_wb.views])
 
-#############
+#loop through Workbook Items and populate the data for Views under each workbook
+#each loop appends the data to the array
+
 vw_id = []
 vw_name = []
 wb_id = []
@@ -74,6 +80,13 @@ for wb in range(len(workbook_info)):
         server.views.populate_image(view)
         vw_image.append(Image.open(io.BytesIO(view.image)))
 
+#once the Views image are populated using---server.views.populate_image(view)---
+#all the images are in the Bytes data type
+#use ---io.BytesIO--- to read the Bytes image
+#---Image.open()--- is used to ready the bytes in to PIL item of .png Image format
+
+#make dictionary from all the arrays
+#load dictionary to data frame using Pandas
 df = pd.DataFrame.from_dict({'proj_id' : proj_id,
 'proj_name' : proj_name,
 'wb_id': wb_id,
