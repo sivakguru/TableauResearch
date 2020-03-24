@@ -89,7 +89,7 @@ def main():
             </div>""".format(workbook_info[wb].name.replace(' ', ''), view.name.replace(' ', '')))
 
 
-    server.auth.sign_out()        
+    server.auth.sign_out()
     #once the Views image are populated using---server.views.populate_image(view)---
     #all the images are in the Bytes data type
     #use ---io.BytesIO--- to read the Bytes image

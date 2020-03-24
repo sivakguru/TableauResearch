@@ -1,7 +1,9 @@
-#Tableau Server Info RR
-
 #install Tableau server client for python
     #pip install tableauserverclient
+
+
+#Tableau server accesstoken : iMUgahYuSiqXXisFrBPr+A==:biVQjxSOJW6LbiCkQG5djkwDqEAoLOAY
+
 
 import tableauserverclient as TSC
 import pandas as pd
