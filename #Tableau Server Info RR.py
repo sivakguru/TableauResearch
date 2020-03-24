@@ -13,6 +13,16 @@ tableau_auth = TSC.TableauAuth('thulasiramvanniya@gmail.com', 'Sairam@2903', 'th
 
 server.auth.sign_in(tableau_auth)
 
+
+#set up authentication RR Deveoper account
+server = TSC.Server('https://10ax.online.tableau.com')
+server.use_server_version()
+#tableau_auth = TSC.TableauAuth('thulasiramvanniya@gmail.com', 'Sairam@2903', 'thulasiramdev938591')
+tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'Developer_123', 'vizsivadev749967')
+#sign-in to server
+server.auth.sign_in(tableau_auth)
+
+
 request_options = TSC.RequestOptions()
 all_workbooks = list(TSC.Pager(server.workbooks, request_options))
 # TSC.Pager(server.views, request_options)
@@ -152,6 +162,11 @@ with server.auth.sign_in(tableau_auth):
         <param name='toolbar' value='yes' />
         <param name='showAppBanner' value='false' /></object>
 </div>""".format(workbook_info [0].name, all_views [0].name)
+
+#view image from a data frame
+# df.iloc[0]['vw_image']
+
+# df.iloc[15]['embed_code'].replace('\n', '')
 
 
 #populating the Images for Workbook and views
