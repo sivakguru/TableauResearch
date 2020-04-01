@@ -20,8 +20,6 @@ import argparse
 import getpass
 #working with file directories
 import os
-import sqlalchemy
-from sqlalchemy.engine.reflection import Inspector
 
 def main():
     parser = argparse.ArgumentParser(description='Get all the Tableau Site details, to populate the React.js framework')
@@ -89,46 +87,46 @@ def main():
     #loop through Workbook Items and populate the data for Views under each workbook
     #each loop appends the data to the array
     print('\nCollecting all the UI related data to a Data Frame')
-    view_id = []
-    view_name = []
-    workbook_id = []
-    workbook_name = []
-    tags = []
-    doc_created_dt = []
-    doc_modified_dt = []
+    vw_id = []
+    vw_name = []
+    wb_id = []
+    wb_name = []
+    wb_tags = []
+    wb_create_dt = []
+    wb_update_dt = []
     show_tabs = []
-    project_id = []
-    project_name = []
+    proj_id = []
+    proj_name = []
     is_default = []
-    description = []
+    proj_desc = []
     owner_id = []
     owner_name = []
-    view_image = []
+    vw_image = []
     embed_code = []
 
     for wb in range(len(all_workbooks)): 
         server.workbooks.populate_views(all_workbooks[wb])
         for view in all_workbooks[wb].views:
-            workbook_id.append(all_workbooks[wb].id)
-            workbook_name.append(all_workbooks[wb].name)
-            tags.append(all_workbooks[wb].tags)
-            doc_created_dt.append(all_workbooks[wb].created_at)
-            doc_modified_dt.append(all_workbooks[wb].updated_at)
+            wb_id.append(all_workbooks[wb].id)
+            wb_name.append(all_workbooks[wb].name)
+            wb_tags.append(all_workbooks[wb].tags)
+            wb_create_dt.append(all_workbooks[wb].created_at)
+            wb_update_dt.append(all_workbooks[wb].updated_at)
             show_tabs.append(all_workbooks[wb].show_tabs)
-            project_id.append(all_workbooks[wb].project_id)
-            project_name.append(all_workbooks[wb].project_name)
+            proj_id.append(all_workbooks[wb].project_id)
+            proj_name.append(all_workbooks[wb].project_name)
             for proj in range(len(all_projects)):
                 if all_workbooks[wb].project_id == all_projects[proj].id:
                     is_default.append(all_projects[proj].is_default())
-                    description.append(all_projects[proj].description)
+                    proj_desc.append(all_projects[proj].description)
             owner_id.append(all_workbooks[wb].owner_id)
             for usr in range(len(all_users)):
                 if all_workbooks[wb].owner_id == all_users[usr].id:
                     owner_name.append(all_users[usr].name)
-            view_id.append(view.id)
-            view_name.append(view.name)
+            vw_id.append(view.id)
+            vw_name.append(view.name)
             server.views.populate_preview_image(view)
-            view_image.append(Image.open(io.BytesIO(view.preview_image)))
+            vw_image.append(Image.open(io.BytesIO(view.preview_image)))
             embed_code.append("""<script type='text/javascript' src='https://10ax.online.tableau.com/javascripts/api/viz_v1.js'></script>
             <div class='tableauPlaceholder' style='width: 1600px; height: 877px;'><object class='tableauViz' width='1600'
                     height='877' style='display:none;'>
@@ -150,95 +148,27 @@ def main():
 
     #make dictionary from all the arrays
     #load dictionary to data frame using Pandas
-    df = pd.DataFrame.from_dict({'project_id' : project_id,
-                                'project_name' : project_name,
+    df = pd.DataFrame.from_dict({'proj_id' : proj_id,
+                                'proj_name' : proj_name,
                                 'is_default' : is_default,
-                                'description' : description,
-                                'workbook_id': workbook_id,
-                                'workbook_name' : workbook_name,
-                                'tags' : tags,
-                                'doc_created_dt' : doc_created_dt,
-                                'doc_modified_dt' : doc_modified_dt,
+                                'proj_desc' : proj_desc,
+                                'wb_id': wb_id,
+                                'wb_name' : wb_name,
+                                'wb_tags' : wb_tags,
+                                'wb_create_dt' : wb_create_dt,
+                                'wb_update_dt' : wb_update_dt,
                                 'show_tabs' : show_tabs,
-                                'view_id' : view_id,
-                                'view_name' : view_name,
+                                'vw_id' : vw_id,
+                                'vw_name' : vw_name,
                                 'owner_id' : owner_id,
                                 'owner_name' : owner_name,
-                                'view_image' : view_image,
+                                'vw_image' : vw_image,
                                 'embed_code' : embed_code})
 
     #file location inside the Current working directory with file name as 'site_<site_id>.csv'
     file_location = os.path.join(cwd,'site_{}.csv'.format(site_id))
     print('\nSaving data to csv in the location : {}'.format(file_location))
-    df.to_csv(r'{}'.format(file_location), index = True)
+    df.to_csv(r'{}'.format(file_location), index = False)
 
-    db_conn = "postgres://postgres:Sivkumar_123@localhost:5432/postgres"
-
-    engine = db.create_engine(db_conn)
-
-    conn = engine.connect()
-
-    metadata = db.MetaData(schema='prestage')
-
-    engine.execute("""CREATE table if not EXISTS prestage.tableau_app_info (
-        rowid numeric(10) NULL,
-        doc_type text NULL,
-        id text NULL,
-        "name" text NULL,
-        "version" text NULL,
-        project_id text NULL,
-        project_name text NULL,
-        description text NULL,
-        is_default bool NULL,
-        workbook_id text NULL,
-        workbook_name text NULL,
-        tags text NULL,
-        doc_created_dt text NULL,
-        doc_modified_dt text NULL,
-        workbook_show_tabs text NULL,
-        view_id text NULL,
-        view_name text NULL,
-        view_count text NULL,
-        content_url text NULL,
-        owner_id text NULL,
-        owner_name text NULL,
-        png_image bytea NULL,
-        embeded_code text NULL
-    );""")
-
-
-    tableau_table = db.Table('tableau_app_info', metadata)
-
-    insp = Inspector.from_engine(engine)
-
-    insp.reflecttable(tableau_table, None)
-
-    for x in range(len(df['rowid'])):
-        query = db.insert(tableau_table).values(
-        rowid = int(df['rowid'][x]),
-        doc_type = df['doc_type'][x],
-        id = df['id'][x],
-        name = df['name'][x],
-        version = df['version'][x],
-        project_id = df['project_id'][x],
-        project_name = df['project_name'][x],
-        description = df['description'][x],
-        is_default = df['is_default'][x],
-        workbook_id = df['workbook_id'][x],
-        workbook_name = df['workbook_name'][x],
-        tags = df['tags'][x],
-        doc_created_dt = str(df['doc_created_dt'][x]),
-        doc_modified_dt = str(df['doc_modified_dt'][x]),
-        workbook_show_tabs = df['workbook_show_tabs'][x],
-        view_id = df['view_id'][x],
-        view_name = df['view_name'][x],
-        view_count = df['view_count'][x],
-        content_url = df['content_url'][x],
-        owner_id = df['owner_id'][x],
-        owner_name = df['owner_name'][x],
-        png_image = df['png_image'][x],
-        embeded_code = df['embeded_code'][x]
-        )
-        conn.execute(query)
 if __name__ == "__main__":
     main()

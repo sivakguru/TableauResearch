@@ -29,20 +29,24 @@ tableau_auth = TSC.TableauAuth('thulasiramvanniya@gmail.com', 'Sairam@2903', 'th
 server.auth.sign_in(tableau_auth)
 
 
-#set up authentication RR Deveoper account
-server = TSC.Server('https://10ax.online.tableau.com')
-#if SSL Security fails use the uncomment the below line to make ssl certificate verification off
-# server.add_http_options({'verify': False})
-server.use_server_version()
-tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'Developer_123', 'vizsivadev749967')
-#sign-in to server
-server.auth.sign_in(tableau_auth)
+# #set up authentication RR Deveoper account
+# server = TSC.Server('https://10ax.online.tableau.com')
+# #if SSL Security fails use the uncomment the below line to make ssl certificate verification off
+# # server.add_http_options({'verify': False})
+# server.use_server_version()
+# tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'Developer_123', 'vizsivadev749967')
+# #sign-in to server
+# server.auth.sign_in(tableau_auth)
 
 site_id = server.sites.get_by_id(server.site_id).content_url
+
+server.server_info.get().product_version
 
 request_options = TSC.RequestOptions()
 all_projects = list(TSC.Pager(server.projects, request_options))
 all_workbooks = list(TSC.Pager(server.workbooks, request_options))
+#to populate the views with the usage to get the view count total_views
+all_views, pg_item = list(server.views.get(req_options = request_options ,usage=False))
 all_views = list(TSC.Pager(server.views, request_options))
 all_users = list(TSC.Pager(server.users, request_options))
 
@@ -208,6 +212,7 @@ wb_pic = Image.open(io.BytesIO(workbook_info[0].preview_image))
 
 python .\tableau_TSC_using_args.py -s 'https://10ax.online.tableau.com' -u 'siva.dhanush.007@gmail.com' -si 'vizsivadev749967'
 
+python .\tableau_TSC_using_args.py -s 'https://10ax.online.tableau.com' -u 'thulasiramvanniya@gmail.com' -si 'thulasiramdev938591'
 
 str(datetime.now().day)+'_'+str(datetime.now().month)+'_'+str(datetime.now().year)
 
@@ -241,5 +246,108 @@ finally:
             f.write(all_workbooks[wb].preview_image)
             f.close()
 
-os.rmdir()
-os.
+detail = {
+
+    "server_url" : "https://10ax.online.tableau.com",
+    "username" : "thulasiramvanniya@gmail.com",
+    "site_id" : "thulasiramdev938591",
+    "password" : "Sairam@2903",
+    "cwd" : "C:/Users/sivkumar/Documents/Project Refference/RR/",
+    "width" : 1600,
+    "height" : 800,
+    "showtabs" : "no",
+    "showtoolbar" : "no",
+    "showappbanner" : "false",
+    "host" : "localhost",
+    "db_port" : "3306",
+    "db_user" : "root",
+    "db_password" : "admin",
+    "database" : "skstest"
+}
+
+server_url = detail['server_url']
+username = detail['username']
+site_id = detail['site_id']
+password = detail['password']
+width = detail['width']
+height = detail['height']
+showtabs = detail['showtabs']
+showtoolbar = detail['showtoolbar']
+showappbanner = detail['showappbanner']
+host = detail['host']
+db_port = detail['db_port']
+db_user = detail['db_user']
+db_password = detail['db_password']
+database = detail['database']
+
+
+png_image = []
+for vw in range(len(all_views)):
+    server.views.populate_preview_image(all_views[vw])
+    png_image.append(all_views[vw].preview_image)
+
+db_conn = "postgres://postgres:Sivkumar_123@localhost:5432/postgres"
+
+engine = sqlalchemy.create_engine(db_conn)
+
+df = pd.DataFrame.from_dict({'png_image' : png_image})
+df.to_sql(name='tableau_app_info', con = engine,schema='prestage', if_exists='append', index=False)
+
+
+view_image = all_views[0].preview_image
+image_decoded = view_image.decode('cp855')
+image_encoded = image_decoded.encode('cp855')
+Image.open(io.BytesIO(image_encoded))
+
+db_connect = {
+    "host"      : "localhost",
+    "database"  : "worldbankdata",
+    "user"      : "myuser",
+    "password"  : "Passw0rd"
+}
+
+db_conn = "postgres://{0}:{1}@{2}:{3}/{4}".format(
+    db_user,
+    db_password,
+    host,
+    db_port,
+    database)
+
+
+{
+    "server_url" : "https://10ax.online.tableau.com",
+    "username" : "siva.dhanush.007@gmail.com",
+    "site_id" : "vizsivadev749967",
+    "password" : "Developer_123",
+    "cwd" : "C:/Users/sivkumar/Documents/Project Refference/RR/",
+    "width" : 1600,
+    "height" : 800,
+    "showtabs" : "no",
+    "showtoolbar" : "no",
+    "showappbanner" : "false",
+    "host" : "localhost",
+    "db_port" : "5432",
+    "db_user" : "postgres",
+    "db_password" : "Sivkumar_123",
+    "database" : "postgres",
+    "db_schema" : "prestage"
+}
+
+{
+    "server_url" : "https://10ax.online.tableau.com",
+    "username" : "thulasiramvanniya@gmail.com",
+    "site_id" : "thulasiramdev938591",
+    "password" : "Sairam@2903",
+    "cwd" : "C:/Users/sivkumar/Documents/Project Refference/RR/",
+    "width" : 1600,
+    "height" : 800,
+    "showtabs" : "no",
+    "showtoolbar" : "no",
+    "showappbanner" : "false",
+    "host" : "localhost",
+    "db_port" : "3306",
+    "db_user" : "root",
+    "db_password" : "admin",
+    "database" : "skstest",
+    "db_schema" : "prestage"
+}
