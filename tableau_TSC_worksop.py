@@ -1,10 +1,6 @@
 #install Tableau server client for python
     #pip install tableauserverclient
 
-
-#Tableau server accesstoken : iMUgahYuSiqXXisFrBPr+A==:biVQjxSOJW6LbiCkQG5djkwDqEAoLOAY
-
-
 import tableauserverclient as TSC
 #pandas for Data frame capabilities
 import pandas as pd
@@ -21,11 +17,14 @@ import getpass
 #working with file directories
 import os
 
+
+server = TSC.Server('https://tableau.internal.deloitte.com')
 #set up authentication RR Deveoper account
 server = TSC.Server('https://10ax.online.tableau.com')
 server.use_server_version()
 tableau_auth = TSC.TableauAuth('thulasiramvanniya@gmail.com', 'Sairam@2903', 'thulasiramdev938591')
 
+tableau_auth = TSC.PersonalAccessTokenAuth('siva_token', 'MbBOJJ2lQ7GDSC3WhfLf/g==:6I2f8TBfbuxvZbIZmEJqGab9MKAZ39VO')
 server.auth.sign_in(tableau_auth)
 
 
@@ -351,3 +350,97 @@ db_conn = "postgres://{0}:{1}@{2}:{3}/{4}".format(
     "database" : "skstest",
     "db_schema" : "prestage"
 }
+
+
+for dirpath, dirname, filename in os.walk(os.getcwd()):
+    print(dirpath,'\n' dirname,'\n' filename)
+
+for dirpath, dirname, filename in os.walk(os.getcwd()):
+    for f in range(len(filename)):
+        if os.path.join(dirpath,filename[f]).endswith(".twbx"):
+            print(os.path.join(dirpath,filename[f]))
+
+file_loc = []
+for dirpath, dirname, filename in os.walk(os.getcwd()):
+    for f in range(len(filename)):
+        if os.path.join(dirpath,filename[f]).endswith(".twbx"):
+            file_loc.append(os.path.join(dirpath,filename[f]))
+
+
+project_name = []
+workbook_name = []
+for f in range(len(file_loc)):
+    project_name.append(file_loc[f].split('\\')[len(file_loc[f].split('\\'))-2])
+    workbook_name.append(file_loc[f].split('\\')[len(file_loc[f].split('\\'))-1])
+
+location_dict = ({
+    'project_name' : project_name,
+    'workbook_name' : workbook_name
+    })
+
+for t in os.scandir(os.getcwd()):
+    print(t.name, t.path)
+    os.path.isdir(t.path)
+
+for t in os.listdir(os.getcwd()):
+    if os.path.isdir(t):
+        for t1 in os.scandir(t):
+            if t1.name.endswith(".twbx"):
+                print(t, t1.name)
+
+file_path = {}
+for t in os.listdir(os.getcwd()):
+    file_name = []
+    if os.path.isdir(t):
+        for t1 in os.scandir(t):
+            if t1.name.endswith(".twbx"):
+                file_path[t] = file_name
+                file_name.append([os.path.join(t1.path,t1.name),os.path.splitext(t1.name)[0]])
+
+
+for t in os.listdir(os.getcwd()):
+    if os.path.isdir(t):
+        for t1 in os.scandir(t):
+            if t1.name.endswith(".twbx"):
+                print(os.path.splitext(t1.name)[0])
+
+
+for k, v in file_path.items():
+    print(k)
+    for val in range(len(v)):
+        for value in range(len(v[val])):
+            print(v[val][value])
+
+for k, v in file_path.items():
+    new_project = TSC.ProjectItem(k, description=k)
+    new_proj_details = server.projects.create(new_project)
+    print('Created Project {}'.format(new_proj_details.name))
+    for val in range(len(v)):
+        new_workbook = TSC.WorkbookItem(name=v[val][1], project_id=new_proj_details.id, show_tabs=True)
+        workbook_publish_mode = TSC.Server.PublishMode.Overwrite
+        new_workbook_details = server.workbooks.publish(new_workbook, v[val][0], mode=workbook_publish_mode)
+        print("workbook name {} and id {}".format(new_workbook_details.name, new_workbook_details.id))
+
+import os
+import time
+n=1
+while n < 5:
+    try:
+        print('\nCan we proceed to load the workbooks ?')
+        input_value = input("enter 'Y' for (YES) and 'N' for (NO) :")
+        if input_value != 'Y':
+            if input_value != 'N':
+                raise ValueError
+    except ValueError:
+        print('\nEnter proper Input..!')
+        n += 1
+        continue
+    else:
+        if input_value == 'Y':
+            print('\nLets load the workbook..!')
+            break
+        else:
+            print('\nexiting the program..!')
+            time.sleep(2)
+            os._exit(0)
+

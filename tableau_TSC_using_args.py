@@ -20,7 +20,7 @@ import argparse
 import getpass
 #working with file directories
 import os
-import sqlalchemy
+import sqlalchemy as db
 from sqlalchemy.engine.reflection import Inspector
 
 def main():
@@ -68,6 +68,7 @@ def main():
         for wb in range(len(all_workbooks)):
             #projectname_workbookname
             proj_wb_name = all_workbooks[wb].project_name+'_'+all_workbooks[wb].name
+
             #views folder - thumbnail (.png) image of each workbook views
             wb_view = all_workbooks[wb].name+'_views'
             #create folder if the folder does not exist
@@ -75,6 +76,7 @@ def main():
                 os.mkdir(os.path.join(cwd, proj_wb_name))
             if not os.path.exists(os.path.join(cwd, proj_wb_name, wb_view)):
                 os.mkdir(os.path.join(cwd, proj_wb_name, wb_view))
+            server.workbooks.download(all_workbooks[wb].id, filepath=os.path.join(cwd, proj_wb_name), no_extract=False)
             server.workbooks.populate_preview_image(all_workbooks[wb])
             server.workbooks.populate_views(all_workbooks[wb])
             with open(os.path.join(cwd,proj_wb_name,'{}.png'.format(all_workbooks[wb].name)),'wb') as f_wb:
@@ -172,73 +174,74 @@ def main():
     print('\nSaving data to csv in the location : {}'.format(file_location))
     df.to_csv(r'{}'.format(file_location), index = True)
 
-    db_conn = "postgres://postgres:Sivkumar_123@localhost:5432/postgres"
+    # db_conn = "postgres://postgres:Sivkumar_123@localhost:5432/postgres"
 
-    engine = db.create_engine(db_conn)
+    # engine = db.create_engine(db_conn)
 
-    conn = engine.connect()
+    # conn = engine.connect()
 
-    metadata = db.MetaData(schema='prestage')
+    # metadata = db.MetaData(schema='prestage')
 
-    engine.execute("""CREATE table if not EXISTS prestage.tableau_app_info (
-        rowid numeric(10) NULL,
-        doc_type text NULL,
-        id text NULL,
-        "name" text NULL,
-        "version" text NULL,
-        project_id text NULL,
-        project_name text NULL,
-        description text NULL,
-        is_default bool NULL,
-        workbook_id text NULL,
-        workbook_name text NULL,
-        tags text NULL,
-        doc_created_dt text NULL,
-        doc_modified_dt text NULL,
-        workbook_show_tabs text NULL,
-        view_id text NULL,
-        view_name text NULL,
-        view_count text NULL,
-        content_url text NULL,
-        owner_id text NULL,
-        owner_name text NULL,
-        png_image bytea NULL,
-        embeded_code text NULL
-    );""")
+    # engine.execute("""CREATE table if not EXISTS prestage.tableau_app_info (
+    #     rowid numeric(10) NULL,
+    #     doc_type text NULL,
+    #     id text NULL,
+    #     "name" text NULL,
+    #     "version" text NULL,
+    #     project_id text NULL,
+    #     project_name text NULL,
+    #     description text NULL,
+    #     is_default bool NULL,
+    #     workbook_id text NULL,
+    #     workbook_name text NULL,
+    #     tags text NULL,
+    #     doc_created_dt text NULL,
+    #     doc_modified_dt text NULL,
+    #     workbook_show_tabs text NULL,
+    #     view_id text NULL,
+    #     view_name text NULL,
+    #     view_count text NULL,
+    #     content_url text NULL,
+    #     owner_id text NULL,
+    #     owner_name text NULL,
+    #     png_image bytea NULL,
+    #     embeded_code text NULL
+    # );""")
 
 
-    tableau_table = db.Table('tableau_app_info', metadata)
+    # tableau_table = db.Table('tableau_app_info', metadata)
 
-    insp = Inspector.from_engine(engine)
+    # insp = Inspector.from_engine(engine)
 
-    insp.reflecttable(tableau_table, None)
+    # insp.reflecttable(tableau_table, None)
 
-    for x in range(len(df['rowid'])):
-        query = db.insert(tableau_table).values(
-        rowid = int(df['rowid'][x]),
-        doc_type = df['doc_type'][x],
-        id = df['id'][x],
-        name = df['name'][x],
-        version = df['version'][x],
-        project_id = df['project_id'][x],
-        project_name = df['project_name'][x],
-        description = df['description'][x],
-        is_default = df['is_default'][x],
-        workbook_id = df['workbook_id'][x],
-        workbook_name = df['workbook_name'][x],
-        tags = df['tags'][x],
-        doc_created_dt = str(df['doc_created_dt'][x]),
-        doc_modified_dt = str(df['doc_modified_dt'][x]),
-        workbook_show_tabs = df['workbook_show_tabs'][x],
-        view_id = df['view_id'][x],
-        view_name = df['view_name'][x],
-        view_count = df['view_count'][x],
-        content_url = df['content_url'][x],
-        owner_id = df['owner_id'][x],
-        owner_name = df['owner_name'][x],
-        png_image = df['png_image'][x],
-        embeded_code = df['embeded_code'][x]
-        )
-        conn.execute(query)
+    # for x in range(len(df['rowid'])):
+    #     query = db.insert(tableau_table).values(
+    #     rowid = int(df['rowid'][x]),
+    #     doc_type = df['doc_type'][x],
+    #     id = df['id'][x],
+    #     name = df['name'][x],
+    #     version = df['version'][x],
+    #     project_id = df['project_id'][x],
+    #     project_name = df['project_name'][x],
+    #     description = df['description'][x],
+    #     is_default = df['is_default'][x],
+    #     workbook_id = df['workbook_id'][x],
+    #     workbook_name = df['workbook_name'][x],
+    #     tags = df['tags'][x],
+    #     doc_created_dt = str(df['doc_created_dt'][x]),
+    #     doc_modified_dt = str(df['doc_modified_dt'][x]),
+    #     workbook_show_tabs = df['workbook_show_tabs'][x],
+    #     view_id = df['view_id'][x],
+    #     view_name = df['view_name'][x],
+    #     view_count = df['view_count'][x],
+    #     content_url = df['content_url'][x],
+    #     owner_id = df['owner_id'][x],
+    #     owner_name = df['owner_name'][x],
+    #     png_image = df['png_image'][x],
+    #     embeded_code = df['embeded_code'][x]
+    #     )
+    #     conn.execute(query)
+
 if __name__ == "__main__":
     main()
