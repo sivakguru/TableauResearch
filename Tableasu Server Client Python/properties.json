@@ -1,0 +1,18 @@
+{
+    "server_name" : "10.11.5.5",
+    "username" : "thulasiram",
+    "site_id" : "sks",
+    "password" : "rrb@ngalore^39!2",
+    "cwd" : "C:\\Users\\Thulasiram\\Documents\\Tableau",
+    "width" : 1250,
+    "height" : 800,
+    "showtabs" : "no",
+    "showtoolbar" : "no",
+    "showappbanner" : "false",
+    "host" : "r2ladc-dev-sksmysql01.mysql.database.azure.com",
+    "db_port" : "3306",
+    "db_user" : "adcsksmysqladmin@r2ladc-dev-sksmysql01",
+    "db_password" : "rrb@ngalorE&362!",
+    "database" : "sks",
+    "db_schema" : "sks"
+}

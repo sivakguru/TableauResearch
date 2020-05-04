@@ -18,9 +18,13 @@ import getpass
 import os
 
 
-server = TSC.Server('https://tableau.internal.deloitte.com')
+server = TSC.Server('https://10.11.5.5/')
+server.http_options()
+
+server.is_signed_in()
 #set up authentication RR Deveoper account
 server = TSC.Server('https://10ax.online.tableau.com')
+server.add_http_options({'verify': False})
 server.use_server_version()
 tableau_auth = TSC.TableauAuth('thulasiramvanniya@gmail.com', 'Sairam@2903', 'thulasiramdev938591')
 
@@ -31,7 +35,7 @@ server.auth.sign_in(tableau_auth)
 # #set up authentication RR Deveoper account
 # server = TSC.Server('https://10ax.online.tableau.com')
 # #if SSL Security fails use the uncomment the below line to make ssl certificate verification off
-# # server.add_http_options({'verify': False})
+
 # server.use_server_version()
 # tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'Developer_123', 'vizsivadev749967')
 # #sign-in to server
@@ -209,9 +213,9 @@ pic.show()
 server.workbooks.populate_preview_image(workbook_info[0])
 wb_pic = Image.open(io.BytesIO(workbook_info[0].preview_image))
 
-python .\tableau_TSC_using_args.py -s 'https://10ax.online.tableau.com' -u 'siva.dhanush.007@gmail.com' -si 'vizsivadev749967'
+# python .\tableau_TSC_using_args.py -s 'https://10ax.online.tableau.com' -u 'siva.dhanush.007@gmail.com' -si 'vizsivadev749967'
 
-python .\tableau_TSC_using_args.py -s 'https://10ax.online.tableau.com' -u 'thulasiramvanniya@gmail.com' -si 'thulasiramdev938591'
+# python .\tableau_TSC_using_args.py -s 'https://10ax.online.tableau.com' -u 'thulasiramvanniya@gmail.com' -si 'thulasiramdev938591'
 
 str(datetime.now().day)+'_'+str(datetime.now().month)+'_'+str(datetime.now().year)
 
@@ -319,7 +323,7 @@ db_conn = "postgres://{0}:{1}@{2}:{3}/{4}".format(
     "site_id" : "vizsivadev749967",
     "password" : "Developer_123",
     "cwd" : "C:/Users/sivkumar/Documents/Project Refference/RR/",
-    "width" : 1600,
+    "width" : 1250,
     "height" : 800,
     "showtabs" : "no",
     "showtoolbar" : "no",
@@ -352,8 +356,8 @@ db_conn = "postgres://{0}:{1}@{2}:{3}/{4}".format(
 }
 
 
-for dirpath, dirname, filename in os.walk(os.getcwd()):
-    print(dirpath,'\n' dirname,'\n' filename)
+# for dirpath, dirname, filename in os.walk(os.getcwd()):
+#     print(dirpath,'\n' dirname,'\n' filename)
 
 for dirpath, dirname, filename in os.walk(os.getcwd()):
     for f in range(len(filename)):
@@ -444,3 +448,5 @@ while n < 5:
             time.sleep(2)
             os._exit(0)
 
+for i in range(len(all_views)):
+    print(all_views[i].content_url.rsplit('/',1)[1])
