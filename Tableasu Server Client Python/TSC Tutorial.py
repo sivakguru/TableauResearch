@@ -1,9 +1,12 @@
 import tableauserverclient as TSC
 
 #set up authentication
-server = TSC.Server('https://10ax.online.tableau.com')
+server = TSC.Server('https://tableau.internal.deloitte.com/')
 server.use_server_version()
-tableau_auth = TSC.TableauAuth('siva.dhanush.007@gmail.com', 'Developer_123', 'vizsivadev749967')
+#tableau_auth = TSC.TableauAuth('atrapa.deloitte.com\sivkuma', 'Justdoit_07', 'default')
+
+tableau_auth = TSC.PersonalAccessTokenAuth('siva_token', '0fVxl4yPQ9mIW+VQv7QOzw==:ci1v7r9by9Nfz3q2viAqNfCvtQmTkMYZ')
+
 
 server.auth.sign_in(tableau_auth)
 
