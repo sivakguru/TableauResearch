@@ -14,3 +14,11 @@ request_options = TSC.RequestOptions()
 all_projects = list(TSC.Pager(server.projects, request_options))
 all_workbooks = list(TSC.Pager(server.workbooks, request_options))
 all_users = list(TSC.Pager(server.users, request_options))
+
+for i in range(len(all_workbooks)):
+    try:
+        server.workbooks.download(all_workbooks[i].id, 
+        filepath=r'C:\Users\sivkumar\Documents\Project\Deloitte',
+        include_extract=True)
+    except Exception as e:
+        pass
