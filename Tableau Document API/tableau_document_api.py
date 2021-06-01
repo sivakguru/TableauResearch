@@ -5,7 +5,7 @@
 import tableaudocumentapi as td
 
 #load the twbx file in to metadata
-wb = td.Workbook(r'C:\Users\sivkumar\Documents\Project\Deloitte\Consulting_ExCo.twbx')
+wb = td.Workbook(r'/Users/skumar763/Documents/Project/Tableau/pre_pci_inventory.twbx')
 
 #pandas for dataframe calculations
 import pandas as pd
@@ -80,4 +80,4 @@ for i in range(df.shape[0]):
 
 ####################################################################
 
-doc.save(r'C:\Users\sivkumar\Documents\Github Repositories\Sample Data\tableau_documentation.docx')
+doc.save(r'/Users/skumar763/Documents/Project/Tableau/pre_pci_inventory.docx')
